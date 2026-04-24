@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
     ChevronLeft,
@@ -29,9 +29,9 @@ function AuthScreen({ isRegister = false, onLogin = () => { } }) {
     }, [isRegister]);
 
     const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [fieldErrors, setFieldErrors] = useState({});
     const [schoolYears, setSchoolYears] = useState([]);
 
@@ -59,16 +59,15 @@ function AuthScreen({ isRegister = false, onLogin = () => { } }) {
     useEffect(() => {
         if (!isLogin) {
             // Fetch school years for student registration
-            api.get("/sections").then(res => {
-                // This is a placeholder, usually you'd have a dedicated school-years endpoint
-                // For now we'll assume the backend provides it or we hardcode the seeded one
+            api.get("/school-years").then((res) => {
+                setSchoolYears(res.data);
+                const active = res.data.find(sy => sy.is_active);
+                if (active) {
+                    setFormData(prev => ({ ...prev, school_year_id: active.id }));
+                } else if (res.data.length > 0) {
+                    setFormData(prev => ({ ...prev, school_year_id: res.data[0].id }));
+                }
             }).catch(() => { });
-            
-            // Hardcoded for now based on seeder
-            setSchoolYears([{ id: 1, label: "2025-2026" }]);
-            if (!formData.school_year_id) {
-                setFormData(prev => ({ ...prev, school_year_id: "1" }));
-            }
         }
     }, [isLogin]);
 
@@ -299,6 +298,20 @@ function AuthScreen({ isRegister = false, onLogin = () => { } }) {
                                             required
                                         />
                                     </div>
+                                    <div>
+                                        <label className={labelClasses}>School Year</label>
+                                        <select
+                                            value={formData.school_year_id}
+                                            onChange={(e) => handleInputChange("school_year_id", e.target.value)}
+                                            className={inputClasses + " pl-4"}
+                                            required
+                                        >
+                                            <option value="">Select School Year</option>
+                                            {schoolYears.map(sy => (
+                                                <option key={sy.id} value={sy.id}>{sy.label}</option>
+                                            ))}
+                                        </select>
+                                    </div>
                                     <div className="md:col-span-2">
                                         <label className={labelClasses}>Home Address</label>
                                         <div className="relative">
@@ -383,6 +396,13 @@ function AuthScreen({ isRegister = false, onLogin = () => { } }) {
                                         className={inputClasses}
                                         required
                                     />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 focus:outline-none"
+                                    >
+                                        {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                                    </button>
                                 </div>
                             </div>
 

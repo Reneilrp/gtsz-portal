@@ -1,7 +1,6 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import authService from '../services/authService';
-
-const AuthContext = createContext();
+import { useState, useEffect } from 'react';
+import { authService } from '../services/authService';
+import { AuthContext } from './authContextObject';
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -15,7 +14,7 @@ export const AuthProvider = ({ children }) => {
                 try {
                     const data = await authService.checkUser();
                     setUser(data);
-                } catch (err) {
+                } catch {
                     localStorage.removeItem('token');
                 }
             }
@@ -41,5 +40,3 @@ export const AuthProvider = ({ children }) => {
         </AuthContext.Provider>
     );
 };
-
-export const useAuth = () => useContext(AuthContext);

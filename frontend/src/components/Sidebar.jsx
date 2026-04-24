@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { navLinks } from '../Navigation/navigation';
 import { LogOut } from 'lucide-react';
 

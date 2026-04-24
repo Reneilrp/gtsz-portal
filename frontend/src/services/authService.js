@@ -73,4 +73,12 @@ export const authService = {
         });
         return response.data;
     },
+
+    async checkUser() {
+        const response = await api.get("/user");
+        if (response.data) {
+            localStorage.setItem("userData", JSON.stringify(response.data));
+        }
+        return response.data;
+    },
 };
