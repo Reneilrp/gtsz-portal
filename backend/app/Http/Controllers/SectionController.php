@@ -51,7 +51,17 @@ class SectionController extends Controller
     public function update(Request $request, $id)
     {
         $section = Section::findOrFail($id);
-        $section->update($request->all());
+
+        $validated = $request->validate([
+            'school_year_id' => 'sometimes|required|exists:school_years,id',
+            'subject_id' => 'sometimes|required|exists:subjects,id',
+            'teacher_id' => 'sometimes|required|exists:teachers,id',
+            'name' => 'sometimes|required|string',
+            'room' => 'nullable|string',
+            'schedule' => 'nullable|string',
+        ]);
+
+        $section->update($validated);
 
         return response()->json($section);
     }
