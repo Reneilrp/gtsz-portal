@@ -10,7 +10,7 @@ class SchoolYearController extends Controller
     // GET /api/school-years
     public function index()
     {
-        $schoolYears = SchoolYear::all();
+        $schoolYears = SchoolYear::paginate(10);
         return response()->json($schoolYears);
     }
 
