@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
-            'role_id' => \App\Models\Role::firstOrCreate(['name' => 'admin'])->id,
+            'status' => 'active',
         ];
     }
 
