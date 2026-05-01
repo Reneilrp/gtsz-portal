@@ -1,12 +1,26 @@
 <?php
+
 namespace Database\Factories;
+
+use App\Models\Subject;
 use Illuminate\Database\Eloquent\Factories\Factory;
-class SubjectFactory extends Factory {
-    public function definition(): array {
+
+/**
+ * @extends Factory<Subject>
+ */
+class SubjectFactory extends Factory
+{
+    /**
+     * Define the model's default state.
+     *
+     * @return array<string, mixed>
+     */
+    public function definition(): array
+    {
         return [
-            'code' => fake()->unique()->bothify('SUB-###'),
-            'name' => fake()->words(3, true),
-            'description' => fake()->sentence(),
+            'code' => $this->faker->unique()->word() . $this->faker->numberBetween(100, 999),
+            'name' => $this->faker->sentence(3),
+            'description' => $this->faker->paragraph(),
         ];
     }
 }

@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Teacher extends Model
 {
-    use HasFactory;
-
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'employee_number',
+        'department',
+        'specialization',
+        'hired_date',
+    ];
 
     public function user()
     {
