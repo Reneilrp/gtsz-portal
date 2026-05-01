@@ -46,8 +46,15 @@ class TeacherController extends Controller
     {
         $teacher = Teacher::findOrFail($id);
 
-        // In a real app, you'd add validation here before updating
-        $teacher->update($request->all());
+        $validated = $request->validate([
+            'user_id' => 'sometimes|exists:users,id',
+            'employee_number' => 'sometimes|string|unique:teachers,employee_number,' . $teacher->id,
+            'department' => 'sometimes|string',
+            'specialization' => 'nullable|string',
+            'hired_date' => 'sometimes|date',
+        ]);
+
+        $teacher->update($validated);
 
         return response()->json($teacher);
     }

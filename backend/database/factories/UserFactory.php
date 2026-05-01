@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'password' => static::$password ??= Hash::make('password'),
-            'role_id' => 1, // Assume 1 is a valid role ID for basic setup
+            'status' => 'active',
         ];
     }
 
