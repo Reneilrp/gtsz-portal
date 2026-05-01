@@ -2,11 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
-    protected $guarded = [];
+    protected $fillable = [
+        'user_id',
+        'student_number',
+        'gender',
+        'birth_date',
+        'address',
+        'guardian_name',
+        'guardian_contact',
+        'school_year_id',
+        'enrolled_at',
+    ];
 
     public function user()
     {
